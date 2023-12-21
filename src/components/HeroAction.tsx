@@ -1,12 +1,21 @@
 "use client";
-import { ChangeEvent, useRef, useState } from "react";
-import ImagePreview from "./ImagePreview";
+import { ChangeEvent, Dispatch, SetStateAction, useRef } from "react";
 
-const HeroAction = () => {
+enum Mode {
+  Upload,
+  Write,
+}
+const HeroAction = ({
+  setMode,
+  setSelectedImage,
+}: {
+  setMode: Dispatch<SetStateAction<Mode>>;
+  setSelectedImage: Dispatch<SetStateAction<File | undefined>>;
+}) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const handleButtonClick = () => {
+    setMode(Mode.Upload);
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
@@ -16,13 +25,13 @@ const HeroAction = () => {
     const selectedFile = e.target.files && e.target.files[0];
 
     if (selectedFile) {
-      const imageUrl = URL.createObjectURL(selectedFile);
-      setSelectedImage(imageUrl);
+      setSelectedImage(selectedFile);
     }
   };
+
   return (
     <>
-      <div className="space-x-4">
+      <div className="space-x-4 mt-5 flex justify-center">
         <button className="primary-button" onClick={handleButtonClick}>
           Upload
         </button>
@@ -34,9 +43,15 @@ const HeroAction = () => {
           onChange={handleFileChange}
         />
 
-        <button className="primary-button">Write</button>
+        <button
+          className="primary-button"
+          onClick={() => {
+            setMode(Mode.Write);
+          }}
+        >
+          Write
+        </button>
       </div>
-      {selectedImage && <ImagePreview equationImage={selectedImage} />}
     </>
   );
 };

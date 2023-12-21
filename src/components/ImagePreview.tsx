@@ -1,9 +1,14 @@
 import Image from "next/image";
 
-const ImagePreview = ({ equationImage }: { equationImage: string }) => {
+const ImagePreview = ({ equationImage }: { equationImage: string | null }) => {
   return (
-    <div className="flex items-center justify-center">
-      <Image src={equationImage} alt="Math Equation" width={400} height={200} />
+    <div className="flex items-center ">
+      <Image
+        src={equationImage ?? ""}
+        alt="Math Equation"
+        width={400}
+        height={200}
+      />
     </div>
   );
 };

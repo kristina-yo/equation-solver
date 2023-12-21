@@ -143,7 +143,7 @@ const Canvas: React.FC = () => {
       <canvas
         ref={canvasRef}
         width={1000}
-        height={400}
+        height={300}
         onMouseDown={startDrawing}
         onMouseMove={continueDrawing}
         onMouseUp={endDrawing}

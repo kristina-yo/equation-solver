@@ -34,6 +34,11 @@ h1 {
   @apply text-primary hover:text-emerald-500 text-lg font-semibold;
 }
 
-.primary-button {
-  @apply px-10 py-3 rounded-3xl text-white bg-primary hover:bg-primary-dark text-lg font-semibold;
+@layer components {
+  .primary-button {
+    @apply px-10 py-3 rounded-3xl text-white bg-primary hover:bg-primary-dark text-lg font-semibold;
+  }
+  .primary-button-small {
+    @apply primary-button py-1 px-4;
+  }
 }
