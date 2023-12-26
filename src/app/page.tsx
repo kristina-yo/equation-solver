@@ -5,7 +5,7 @@ import HeroHeading from "@/components/HeroHeading";
 import ImagePreview from "@/components/ImagePreview";
 import WriteEquation from "@/components/WriteEquation";
 import { solve } from "@/queries/generateEquation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export enum Mode {
   Upload,
@@ -17,6 +17,11 @@ export default function Home() {
   const [selectedImage, setSelectedImage] = useState<File | undefined>(
     undefined
   );
+  // useEffect(() => {
+  //   if (mode === Mode.Write) {
+  //     setSelectedImage(undefined);
+  //   }
+  // }, [mode]);
   return (
     <main className="flex min-h-screen  flex-col items-center justify-between p-24">
       <div className="w-[50%]">

@@ -1,4 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
 
 interface Point {
   x: number;
@@ -11,7 +17,11 @@ interface DrawingState {
   undoneLines: Point[][];
 }
 
-const Canvas: React.FC = () => {
+const Canvas = ({
+  setCanvasImage,
+}: {
+  setCanvasImage: Dispatch<SetStateAction<File | undefined>>;
+}) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [drawingState, setDrawingState] = useState<DrawingState>({
     lines: [],
@@ -70,6 +80,20 @@ const Canvas: React.FC = () => {
     draw();
   }, [drawingState]);
 
+  const dataURLtoFile = (dataUrl: string, filename: string): File => {
+    const arr = dataUrl.split(",");
+    const mime = arr[0].match(/:(.*?);/)![1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: mime });
+  };
+
   const startDrawing = (event: React.MouseEvent<HTMLCanvasElement>) => {
     const { offsetX, offsetY } = event.nativeEvent;
     setDrawingState((prevState) => ({
@@ -97,6 +121,13 @@ const Canvas: React.FC = () => {
         undoneLines: [],
       }));
       setIsDrawing(false);
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      const dataUrl = canvas.toDataURL("image/png");
+      const file = dataURLtoFile(dataUrl, "drawing.png");
+
+      setCanvasImage(file);
     }
   };
 
@@ -137,6 +168,18 @@ const Canvas: React.FC = () => {
     link.download = "drawing.jpg"; // Use '.jpg' as the file extension
     link.click();
   };
+
+  // useEffect(() => {
+  //   if (!isDrawing) {
+  //     const canvas = canvasRef.current;
+  //     if (!canvas) return;
+
+  //     const dataUrl = canvas.toDataURL("image/png");
+  //     const file = dataURLtoFile(dataUrl, "drawing.png");
+
+  //     setCanvasImage(file);
+  //   }
+  // }, [isDrawing, setCanvasImage]);
 
   return (
     <div>

@@ -2,7 +2,7 @@ import { Mode } from "@/app/page";
 import ImagePreview from "./ImagePreview";
 import WriteEquation from "./WriteEquation";
 import { generateEquation, solve } from "@/queries/generateEquation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const EquationConversion = ({
   mode,
@@ -18,6 +18,9 @@ const EquationConversion = ({
   if (selectedImage) {
     imageUrl = URL.createObjectURL(selectedImage);
   }
+  const [canvasImage, setCanvasImage] = useState<File | undefined>(
+    selectedImage
+  );
   const handleConvert = async (selectedImage: File) => {
     const formData = new FormData();
     formData.append("image", selectedImage);
@@ -25,23 +28,29 @@ const EquationConversion = ({
     const data = await generateEquation(formData);
     setConvertedEquation(data);
   };
-  console.log(convertedEquation?.result?.[0]);
+
+  useEffect(() => {
+    console.log("hello");
+
+    setCanvasImage(undefined);
+  }, [mode]);
+  console.log(canvasImage);
 
   return (
     <div className="space-y-4">
       {mode === Mode.Upload && selectedImage && (
         <ImagePreview equationImage={imageUrl} />
       )}
-      {mode === Mode.Write && <WriteEquation />}
-      {selectedImage && (
+      {mode === Mode.Write && <WriteEquation setCanvasImage={setCanvasImage} />}
+      {canvasImage && (
         <button
           className="primary-button-small"
-          onClick={() => handleConvert(selectedImage)}
+          onClick={() => handleConvert(canvasImage)}
         >
           Convert
         </button>
       )}
-      {convertedEquation && mode === Mode.Upload && (
+      {convertedEquation && (
         <div className="flex  space-x-4 items-start">
           <span className="font-bold text-black text-lg">Result: </span>
           <div className="flex flex-col text-lg">
