@@ -18,10 +18,12 @@ interface DrawingState {
 }
 
 const Canvas = ({
-  setCanvasImage,
+  setSelectedImage,
 }: {
-  setCanvasImage: Dispatch<SetStateAction<File | undefined>>;
+  setSelectedImage: Dispatch<SetStateAction<File | undefined>>;
 }) => {
+  const canvasContainerRef = useRef<HTMLDivElement | null>(null);
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [drawingState, setDrawingState] = useState<DrawingState>({
     lines: [],
@@ -95,6 +97,10 @@ const Canvas = ({
   };
 
   const startDrawing = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+
+    if (!canvas) return;
+
     const { offsetX, offsetY } = event.nativeEvent;
     setDrawingState((prevState) => ({
       ...prevState,
@@ -105,6 +111,10 @@ const Canvas = ({
 
   const continueDrawing = (event: React.MouseEvent<HTMLCanvasElement>) => {
     if (!isDrawing) return;
+
+    const canvas = canvasRef.current;
+
+    if (!canvas) return;
 
     const { offsetX, offsetY } = event.nativeEvent;
     setDrawingState((prevState) => ({
@@ -127,7 +137,7 @@ const Canvas = ({
       const dataUrl = canvas.toDataURL("image/png");
       const file = dataURLtoFile(dataUrl, "drawing.png");
 
-      setCanvasImage(file);
+      setSelectedImage(file);
     }
   };
 
@@ -169,29 +179,28 @@ const Canvas = ({
     link.click();
   };
 
-  // useEffect(() => {
-  //   if (!isDrawing) {
-  //     const canvas = canvasRef.current;
-  //     if (!canvas) return;
+  useEffect(() => {
+    const canvasContainer = canvasContainerRef.current;
+    const canvas = canvasRef.current;
 
-  //     const dataUrl = canvas.toDataURL("image/png");
-  //     const file = dataURLtoFile(dataUrl, "drawing.png");
-
-  //     setCanvasImage(file);
-  //   }
-  // }, [isDrawing, setCanvasImage]);
+    if (canvasContainer && canvas) {
+      canvas.width = canvasContainer.clientWidth;
+    }
+  }, [canvasContainerRef]);
 
   return (
-    <div>
+    <div
+      ref={canvasContainerRef}
+      style={{ position: "relative", width: "100%" }}
+    >
       <canvas
         ref={canvasRef}
-        width={1000}
         height={300}
         onMouseDown={startDrawing}
         onMouseMove={continueDrawing}
         onMouseUp={endDrawing}
         onMouseLeave={endDrawing}
-        style={{ border: "2px solid #000" }}
+        style={{ border: "2px solid #000", width: "100%" }}
       />
       <div className="space-x-2 mt-1">
         <button className="canvas-button" onClick={undo}>

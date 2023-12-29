@@ -16,6 +16,7 @@ const HeroAction = ({
 
   const handleButtonClick = () => {
     setMode(Mode.Upload);
+    setSelectedImage(undefined);
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
@@ -47,6 +48,7 @@ const HeroAction = ({
           className="primary-button"
           onClick={() => {
             setMode(Mode.Write);
+            setSelectedImage(undefined);
           }}
         >
           Write

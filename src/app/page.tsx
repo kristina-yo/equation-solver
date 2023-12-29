@@ -24,7 +24,7 @@ export default function Home() {
   // }, [mode]);
   return (
     <main className="flex min-h-screen  flex-col items-center justify-between p-24">
-      <div className="w-[50%]">
+      <div className="xl:w-[50%]">
         <HeroHeading />
         <HeroAction setMode={setMode} setSelectedImage={setSelectedImage} />
         <hr className="border-solid border-1 my-8  border-gray-300 opacity-100" />
@@ -37,7 +37,11 @@ export default function Home() {
             <button className="primary-button-small">Convert</button>
           )}
         </div> */}
-        <EquationConversion mode={mode} selectedImage={selectedImage} />
+        <EquationConversion
+          mode={mode}
+          selectedImage={selectedImage}
+          setSelectedImage={setSelectedImage}
+        />
       </div>
     </main>
   );

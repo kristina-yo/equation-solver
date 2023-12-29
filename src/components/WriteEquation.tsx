@@ -2,14 +2,14 @@ import { Dispatch, SetStateAction } from "react";
 import Canvas from "./Canvas";
 
 const WriteEquation = ({
-  setCanvasImage,
+  setSelectedImage,
 }: {
-  setCanvasImage: Dispatch<SetStateAction<File | undefined>>;
+  setSelectedImage: Dispatch<SetStateAction<File | undefined>>;
 }) => {
   return (
     <div className="flex flex-col">
       <span className="text-xl mb-1">Write a math problem</span>
-      <Canvas setCanvasImage={setCanvasImage} />
+      <Canvas setSelectedImage={setSelectedImage} />
     </div>
   );
 };

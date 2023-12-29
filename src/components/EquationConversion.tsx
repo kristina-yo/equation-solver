@@ -2,14 +2,16 @@ import { Mode } from "@/app/page";
 import ImagePreview from "./ImagePreview";
 import WriteEquation from "./WriteEquation";
 import { generateEquation, solve } from "@/queries/generateEquation";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 const EquationConversion = ({
   mode,
   selectedImage,
+  setSelectedImage,
 }: {
   mode: Mode;
   selectedImage: File | undefined;
+  setSelectedImage: Dispatch<SetStateAction<File | undefined>>;
 }) => {
   const [convertedEquation, setConvertedEquation] = useState<
     TGenerateEquationResponse | undefined
@@ -18,9 +20,7 @@ const EquationConversion = ({
   if (selectedImage) {
     imageUrl = URL.createObjectURL(selectedImage);
   }
-  const [canvasImage, setCanvasImage] = useState<File | undefined>(
-    selectedImage
-  );
+
   const handleConvert = async (selectedImage: File) => {
     const formData = new FormData();
     formData.append("image", selectedImage);
@@ -29,23 +29,18 @@ const EquationConversion = ({
     setConvertedEquation(data);
   };
 
-  useEffect(() => {
-    console.log("hello");
-
-    setCanvasImage(undefined);
-  }, [mode]);
-  console.log(canvasImage);
-
   return (
     <div className="space-y-4">
       {mode === Mode.Upload && selectedImage && (
         <ImagePreview equationImage={imageUrl} />
       )}
-      {mode === Mode.Write && <WriteEquation setCanvasImage={setCanvasImage} />}
-      {canvasImage && (
+      {mode === Mode.Write && (
+        <WriteEquation setSelectedImage={setSelectedImage} />
+      )}
+      {selectedImage && (
         <button
-          className="primary-button-small"
-          onClick={() => handleConvert(canvasImage)}
+          className="primary-button-small rounded-md"
+          onClick={() => handleConvert(selectedImage)}
         >
           Convert
         </button>
