@@ -38,6 +38,11 @@ const EquationConversion = ({
     }
   };
 
+  useEffect(() => {
+    setConvertedEquation(undefined);
+    setSolvedEquation(undefined);
+  }, [mode]);
+
   return (
     <div className="space-y-4">
       {mode === Mode.Upload && selectedImage && (
@@ -47,41 +52,46 @@ const EquationConversion = ({
         <WriteEquation setSelectedImage={setSelectedImage} />
       )}
       {selectedImage && (
-        <button
-          className="primary-button-small rounded-md"
-          onClick={() => handleConvert(selectedImage)}
-        >
-          Convert
-        </button>
-      )}
-      {convertedEquation && (
         <>
-          <div className="flex  space-x-4 items-start">
-            <span className="font-bold text-black text-lg">Result: </span>
-            <div className="flex flex-col text-lg">
-              {convertedEquation?.map((result, i) => (
-                <span key={i}>{result}</span>
-              ))}
-            </div>
-          </div>
           <button
             className="primary-button-small rounded-md"
-            onClick={handleSolve}
+            onClick={() => handleConvert(selectedImage)}
           >
-            Solve
+            Convert
           </button>
-          {solvedEquation && (
-            <div className="flex  space-x-4 items-start">
-              <span className="font-bold text-black text-lg">Solution: </span>
-              <div>
-                {solvedEquation?.map((result, i) => (
-                  <div key={i}>
-                    <span>{result}</span>
-                    <br />
-                  </div>
-                ))}
+
+          {convertedEquation && (
+            <>
+              <div className="flex  space-x-4 items-start">
+                <span className="font-bold text-black text-lg">Result: </span>
+                <div className="flex flex-col text-lg">
+                  {convertedEquation?.map((result, i) => (
+                    <span key={i}>{result}</span>
+                  ))}
+                </div>
               </div>
-            </div>
+              <button
+                className="primary-button-small rounded-md"
+                onClick={handleSolve}
+              >
+                Solve
+              </button>
+              {solvedEquation && (
+                <div className="flex  space-x-4 items-start">
+                  <span className="font-bold text-black text-lg">
+                    Solution:{" "}
+                  </span>
+                  <div>
+                    {solvedEquation?.map((result, i) => (
+                      <div key={i}>
+                        <span>{result}</span>
+                        <br />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </>
       )}
