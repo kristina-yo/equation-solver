@@ -4,7 +4,7 @@ import HeroAction from "@/components/HeroAction";
 import HeroHeading from "@/components/HeroHeading";
 import ImagePreview from "@/components/ImagePreview";
 import WriteEquation from "@/components/WriteEquation";
-import { solve } from "@/queries/generateEquation";
+import { solve } from "@/queries/query";
 import { useEffect, useState } from "react";
 
 export enum Mode {
@@ -28,15 +28,6 @@ export default function Home() {
         <HeroHeading />
         <HeroAction setMode={setMode} setSelectedImage={setSelectedImage} />
         <hr className="border-solid border-1 my-8  border-gray-300 opacity-100" />
-        {/* <div className="space-y-4">
-          {mode === Mode.Upload && selectedImage && (
-            <ImagePreview equationImage={selectedImage} />
-          )}
-          {mode === Mode.Write && <WriteEquation />}
-          {(mode === Mode.Write || selectedImage) && (
-            <button className="primary-button-small">Convert</button>
-          )}
-        </div> */}
         <EquationConversion
           mode={mode}
           selectedImage={selectedImage}

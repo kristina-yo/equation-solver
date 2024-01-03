@@ -14,10 +14,15 @@ export const generateEquation = async (
   return data as TGenerateEquationResponse;
 };
 
-export const solve = async () => {
-  await axios.post(`${baseURL}/solve`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+export const solve = async (equation: string[]) => {
+  const { data } = await axios.post(
+    `${baseURL}/solve`,
+    { equation: equation },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return data as { result: string };
 };
