@@ -135,7 +135,8 @@ const Canvas = ({
       if (!canvas) return;
 
       const dataUrl = canvas.toDataURL("image/png");
-      const file = dataURLtoFile(dataUrl, "drawing.png");
+      const randomString = Math.random().toString(36).substring(7);
+      const file = dataURLtoFile(dataUrl, `drawing_${randomString}.png`);
 
       setSelectedImage(file);
     }
@@ -175,7 +176,8 @@ const Canvas = ({
     const dataUrl = canvas.toDataURL("image/jpeg"); // Use 'image/jpeg' instead of 'image/png'
     const link = document.createElement("a");
     link.href = dataUrl;
-    link.download = "drawing.jpg"; // Use '.jpg' as the file extension
+    const randomString = Math.random().toString(36).substring(7);
+    link.download = `drawing_${randomString}.jpg`; // Use '.jpg' as the file extension
     link.click();
   };
 

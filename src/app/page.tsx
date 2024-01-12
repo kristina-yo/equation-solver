@@ -2,10 +2,7 @@
 import EquationConversion from "@/components/EquationConversion";
 import HeroAction from "@/components/HeroAction";
 import HeroHeading from "@/components/HeroHeading";
-import ImagePreview from "@/components/ImagePreview";
-import WriteEquation from "@/components/WriteEquation";
-import { solve } from "@/queries/query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export enum Mode {
   Upload,
@@ -17,11 +14,7 @@ export default function Home() {
   const [selectedImage, setSelectedImage] = useState<File | undefined>(
     undefined
   );
-  // useEffect(() => {
-  //   if (mode === Mode.Write) {
-  //     setSelectedImage(undefined);
-  //   }
-  // }, [mode]);
+
   return (
     <main className="flex min-h-screen  flex-col items-center justify-between p-24">
       <div className="xl:w-[50%]">
